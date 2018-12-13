@@ -9,8 +9,8 @@
     "profileFields": ["id", "displayName", "photos"]
   },
   "twitter": {
-    "consumerKey": "EEtsKJAosKACRtVuIy4dnSJ1S",
-    "consumerSecret": "GGcTpyJnoO0pq3PXC2SHgwQOMc3u26UlfxIUZmTI0L5jy6Am9s",
+    "consumerKey": "7Fd5Jtn67ZOmPpKkGVSCunLxl",
+    "consumerSecret": "Sjt5jdMneNgVly95QGpUgNWMKuwkhUtX9hXWYczunkyzNZzOu5",
     "callbackURL": "https://stark-fortress-35869.herokuapp.com/auth/twitter/callback",
     "profileFields": ["id", "displayName", "photos"]
   },
