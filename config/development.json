@@ -5,13 +5,13 @@
   "fb": {
     "clientID": "904162603121477",
     "clientSecret": "7c42e562a1d5f09fea37716cd73916d8",
-    "callbackURL": "https://boiling-scrubland-34821.herokuapp.com/auth/facebook/callback",
+    "callbackURL": "https://stark-fortress-35869.herokuapp.com/auth/facebook/callback",
     "profileFields": ["id", "displayName", "photos"]
   },
   "twitter": {
     "consumerKey": "EEtsKJAosKACRtVuIy4dnSJ1S",
     "consumerSecret": "GGcTpyJnoO0pq3PXC2SHgwQOMc3u26UlfxIUZmTI0L5jy6Am9s",
-    "callbackURL": "https://boiling-scrubland-34821.herokuapp.com/auth/twitter/callback",
+    "callbackURL": "https://stark-fortress-35869.herokuapp.com/auth/twitter/callback",
     "profileFields": ["id", "displayName", "photos"]
   },
   "github": {
