@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>	Mongo Scraper </title>
+		<% include head %>
+	</head>
+	<body>
+		<!-- The video -->
+		<video autoplay muted loop id="myVideo">
+			<source src="images/videoplayback.mp4" type="video/mp4">
+		</video>
+
+		<% include navbar %>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="jumbotron text-center">
+						<div class="caption">
+						<h1>Mongo Scraper</h1>
+						<p>New York Times Edition</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="panel-group">
+
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<a href="#" class="article-link">Some Article from the NY Times</a>
+									<button class="btn btn-default hvr-bounce-in pull-right">SAVE ARTICLE</button>
+								</div>
+								<div class="panel-body">
+									Lorem Ipsum
+								</div>
+							</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<% if((typeof user != 'undefined') && (flag === 0)) { %>
+			<% console.log("About to open modal, flag: " + flag); %>
+			<% include authenticated-modal %>
+		<% } %>
+
+	</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+	<html lang="en" dir="ltr">
+		<head>
+			<meta charset="utf-8">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<!-- Latest compiled and minified JavaScript -->
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+			<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Metamorphous|Swanky+and+Moo+Moo" rel="stylesheet">
+			<link rel="stylesheet" href="../public/stylesheets/hover.css">
+			<link rel="stylesheet" href="../public/stylesheets/style.css">
+			<script src="/javascript/main.js"></script>
+			<title>Mongo Scrapper</title>
+		</head>
+		<body>
+			<!-- The video -->
+			<video autoplay muted loop id="myVideo">
+			  <source src="../public/images/videoplayback.mp4" type="video/mp4">
+			</video>
+			<nav id="navbar-header" class="navbar navbar-custom">
+			  <div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="/">Mongo Scraper</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+				  <ul class="nav navbar-nav login-favs">
+					<li class="hvr-grow"><a href="#">Login</a></li>
+					<li class="hvr-grow favorites-link"><a href="/favorites">Saved Articles</a></li>
+				  </ul>
+				  <ul class="nav navbar-nav navbar-right">
+					<li><button class="btn hvr-wobble-horizontal">SCRAPE NEW ARTICLES!</button></li>
+					<li><button class="btn hvr-wobble-horizontal">CLEAR ARTICLES!</button></li>
+				  </ul>
+				</div><!--/.nav-collapse -->
+			  </div><!--/.container-fluid -->
+			</nav>
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="jumbotron text-center">
+						  <div class="caption">
+							<h1>Mongo Scraper</h1>
+							<p>New York Times Edition</p>
+						  </div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="panel-group">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<a href="#" class="article-link">Some Article from the NY Times</a>
+									<button class="btn btn-default hvr-bounce-in pull-right">SAVE ARTICLE</button>
+								</div>
+								<div class="panel-body">
+									Lorem Ipsum
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>

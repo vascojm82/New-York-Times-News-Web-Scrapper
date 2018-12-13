@@ -1,0 +1,23 @@
+{
+  "host": "http://localhost:3000",
+  "dbURI": "mongodb://vascojm:kof99kis@ds153198.mlab.com:53198/mongo-scrapper",
+  "sessionSecret": "topSecret",
+  "fb": {
+    "clientID": "904162603121477",
+    "clientSecret": "7c42e562a1d5f09fea37716cd73916d8",
+    "callbackURL": "https://boiling-scrubland-34821.herokuapp.com/auth/facebook/callback",
+    "profileFields": ["id", "displayName", "photos"]
+  },
+  "twitter": {
+    "consumerKey": "EEtsKJAosKACRtVuIy4dnSJ1S",
+    "consumerSecret": "GGcTpyJnoO0pq3PXC2SHgwQOMc3u26UlfxIUZmTI0L5jy6Am9s",
+    "callbackURL": "https://boiling-scrubland-34821.herokuapp.com/auth/twitter/callback",
+    "profileFields": ["id", "displayName", "photos"]
+  },
+  "github": {
+    "clientID": "8032ebeadd130e721c67",
+    "clientSecret": "0ccc09b92b29e10674127016f381e9272b69602b",
+    "callbackURL": "http://localhost:3000/auth/github/callback",
+    "profileFields": ["id", "displayName", "photos"]
+  }
+}
