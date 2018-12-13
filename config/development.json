@@ -17,7 +17,7 @@
   "github": {
     "clientID": "8032ebeadd130e721c67",
     "clientSecret": "0ccc09b92b29e10674127016f381e9272b69602b",
-    "callbackURL": "http://localhost:3000/auth/github/callback",
+    "callbackURL": "https://stark-fortress-35869.herokuapp.com/auth/github/callback",
     "profileFields": ["id", "displayName", "photos"]
   }
 }
