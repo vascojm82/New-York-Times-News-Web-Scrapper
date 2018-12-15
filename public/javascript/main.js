@@ -41,7 +41,7 @@ $( document ).ready(function() {
   $('.btn-save').click(function(){
     let dataArticle = $(this).data("article");
     let domQuery = `div.panel.panel-primary.art-${dataArticle}`;
-    let route ="http://localhost:3000/favorites";
+    let route ="https://stark-fortress-35869.herokuapp.com/favorites";
 
     let record = {
       heading: $(domQuery).find(".article-link").text(),
