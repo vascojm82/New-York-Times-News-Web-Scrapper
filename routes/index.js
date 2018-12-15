@@ -1,51 +1,13 @@
 let express = require('express');
 let router = express.Router();
-const request = require('request');   //'request' module, not the same as the 'req' object
-const helper = require('../helpers');
-const passport = require('passport');
+let request = require('request');   //'request' module, not the same as the 'req' object
+let helper = require('../helpers');
+let passport = require('passport');
+let cheerio = require('cheerio');
+let jSON = require('circular-json');
 let route = express();
+let nytUrl = "https://www.nytimes.com/section/world";
 route.locals.flag = 0;
-
-/*Additional processor function*/
-//Fetch all Favorite Movies from IMDB API
-let fetchFavoriteIMDB = (data) => {
-  return new Promise((resolve, reject) => {
-    const movieUrl = `${apiBaseUrl}/movie/`;
-    let favoriteMovies = {results: new Array()};
-
-    data.forEach(function(favoriteMovieId, index){
-      console.log("Favorite Movie ID: " + favoriteMovieId);
-
-      requestApi(movieUrl, favoriteMovieId)
-        .then((movie) => {
-          favoriteMovies.results.push(movie);
-          if(favoriteMovies.results.length >= data.length){
-            resolve(favoriteMovies);
-          }
-        })
-        .catch((error) => {
-          console.log("ERROR LOADING FAVORITE MOVIE RECORD TO ARRAY");
-          return reject();
-        });
-    });
-  });
-}
-
-//Promesified request to API
-let requestApi = (movieUrl, favoriteMovieId) => {
-  return new Promise((resolve, reject) => {
-    request.get(movieUrl + `${favoriteMovieId}?api_key=${apiKey}`, function(error, response, data){
-      if(error){
-        console.log("REQUEST UNSUCCESSFULL");
-        reject(error);
-        return;
-      }
-
-      resolve(data);
-    });
-  });
-}
-/*************************/
 
 router.use((req, res, next) => {
   res.locals.flag = route.locals.flag;
@@ -53,70 +15,61 @@ router.use((req, res, next) => {
   next();   //DON'T FORGET 'next()' OR THE REQUEST CYCLE ENDS AND IT DOESN"T CONTINUE TO THE NEXT ROUTE
 });
 
-/* GET home page. */
+// Home Route (index)
 router.get('/', function(req, res, next) {
-  console.log("Session1: " + req.session.id);
-  console.log("locals: " + JSON.stringify(res.locals));
   const sessionId =  req.session.id;
 
   if(typeof sessionId === 'undefined'){
     sessionId = '';
   }
 
-  console.log(`sessionId: ${sessionId}`);
+  console.log("user ---Index Route---: " + req.user);
 
-  // request.get(nowPlayingUrl, function(error, response, data){
-  //   console.log("data: " + JSON.stringify(JSON.parse(data).results));
-  //
-    res.render('index', {
-      //jsonData: JSON.parse(data).results,
-      user: req.user,
-      sessionId: sessionId
-    });
-  // });
-});
-
-/* GET individual movie page. */
-router.get('/movie/:id', function(req, res, next) {
-  const movieId = req.params.id;
-  const thisMovieUrl = `${apiBaseUrl}/movie/${movieId}?api_key=${apiKey}`;
-
-  request.get(thisMovieUrl, function(error, response, data) {
-    res.render('single-movie', {
-      movieData: JSON.parse(data),
-      user: req.user
-    });
+  res.render('index', {
+    user: req.user,
+    sessionId: sessionId
   });
 });
 
-router.post('/search', function(req, res, next) {
-    const userSearchTerm = encodeURI(req.body.movieSearch);
-    const category = req.body.cat;    //'req.body.cat' will return the CHOSEN option from the dropdown box, either 'movie' or 'person'
-    console.log(category);            //so no need for if statements to determine which one was chosen.
-    const movieUrl = `${apiBaseUrl}/search/${category}?query=${userSearchTerm}&api_key=${apiKey}`;
-    const sessionId =  req.session.id;
+/* GET scrape page. */
+router.get('/scrape', function(req, res, next) {
+  const sessionId =  req.session.id;
 
-    if(typeof sessionId === 'undefined'){
-      sessionId = '';
-    }
+  if(typeof sessionId === 'undefined'){
+    sessionId = '';
+  }
 
-    request.get(movieUrl, function(error, response, data){
-      let parsedData = JSON.parse(data);
+  request.get(nytUrl, function(error, response, data){
+    let $ = cheerio.load(data);
+    let articles   = [];
+    let articlesList = $(".story-menu").find(".story-body");
 
-      if(category === "person")
-        parsedData.results = parsedData.results[0].known_for;
+    articlesList.each((index, element) => {
+      let image = $(element).parent().find("figure.media").find("img").attr("src") || $(element).find('div.wide-thumb img').attr("src");
 
-      res.render('index', {
-        jsonData: parsedData.results,
-        user: req.user,
-        sessionId: sessionId
+      articles.push({
+        headline: ($(element).find("h2.headline").children('a').length)? $(element).find("h2.headline a").text().trim(): $(element).find("h2.headline").text().trim(),
+        description: $(element).find("p.summary").text().trim(),
+        url: $(element).find("a").attr("href"),
+        img: image
       });
     });
+
+    console.log("user --- Scraper Route ---: " + req.user);
+
+    res.render('scrape', {
+      jsonData: articles,
+      user: req.user,
+      sessionId: sessionId
+      });
+  });
 });
 
 router.get('/favorites',[helper.isAuthenticated, function(req, res, next) {
-  const uniqueId  = req.user.uniqueId;
+  const uniqueId  = req.user._id;
   const sessionId =  req.session.id;
+
+  console.log("req.user: " + req.user)
 
   if(typeof sessionId === 'undefined'){
     sessionId = '';
@@ -127,29 +80,26 @@ router.get('/favorites',[helper.isAuthenticated, function(req, res, next) {
   console.log(`/favorites - sessionId: ${sessionId}`);
   helper.getFavorites(uniqueId)
     .then((data) => {
-      console.log("SUCCESS GETTING FAVORITES: " + data);
-      fetchFavoriteIMDB(data)
-        .then((data) => {
-          let buffer = `[${data.results}]`;   //I had made an array of JSON objs and was not complaint with the format until I did this. ARGGGG!
-          res.render('index', {
-            jsonData: JSON.parse(buffer),     //Then JSON parsed it and it finally freaking works
-            user: req.user,
-            sessionId: sessionId
-          });
-        }).catch((error) => {
-          console.log('Error Fetching Favorite Movie Data FROM IMDB API');
-        });
+      console.log("SUCCESS GETTING FAVORITES data: " + JSON.stringify(data));
+      res.render('scrape', {
+        jsonData: data,
+        user: req.user,
+        sessionId: sessionId
+      });
     }).catch((error) => {
       console.log("ERROR GETTING FAVORITES");
     });
 }]);
 
-router.post('/favorites/:movieId', function(req, res, next) {
-  const movieId   = req.params.movieId;
-  const uniqueId  = req.user.uniqueId || '';
-  const sessionId = req.session.id;
+router.post('/favorites', function(req, res, next) {
+  let uniqueId  = req.user._id || '';
+  let sessionId = req.session.id;
+  let record = req.body;
 
-  helper.addFavorites(uniqueId, movieId, sessionId).then((data) => {
+  console.log("uniqueId --- Favorites Route ---: " + req.user._id);
+  console.log("record: " + jSON.stringify(record));
+
+  helper.addFavorites(uniqueId, record ,sessionId).then((data) => {
     console.log("Added to Favorites");
     res.json({success: "Added to Favorites"});
   }).catch((error) => {

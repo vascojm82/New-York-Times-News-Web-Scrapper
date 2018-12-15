@@ -7,7 +7,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 const helper = require('../helpers');
 
 let serializeUser = passport.serializeUser((user, done) => {
-  console.log("serializeUser - User: " + JSON.stringify(user));
+  console.log("serializeUser - User: " + user.id);
   done(null, user.id);
 });
 

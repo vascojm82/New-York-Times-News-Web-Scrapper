@@ -13,10 +13,20 @@ const user = new Mongoose.Schema({
   profilePic: String
 });
 
+const article = new Mongoose.Schema({
+  userUniqueId: String,
+  headline: String,
+  description: String,
+  url: String,
+  img: String
+});
+
 //Turn the schema into a usable model
 let userModel = Mongoose.model('user', user);
+let articleModel = Mongoose.model('articles', article);
 
 module.exports = {
   Mongoose,
-  userModel
+  userModel,
+  articleModel
 }

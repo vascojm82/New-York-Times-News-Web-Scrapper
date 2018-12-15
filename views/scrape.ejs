@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>	Mongo Scraper </title>
+		<% include head %>
+	</head>
+	<body>
+		<!-- The video -->
+		<video autoplay muted loop id="myVideo">
+			<source src="images/videoplayback.mp4" type="video/mp4">
+		</video>
+
+		<% include navbar %>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="jumbotron text-center">
+						<div class="caption">
+						<h1>Mongo Scraper</h1>
+						<p>New York Times Edition</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="panel-group">
+						<% jsonData.forEach((article, index) => { console.log("article: " + JSON.stringify(article)); %>
+							<div class="panel panel-primary art-<%= index %>">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-9">
+											<a href="<%= article.url %>" class="article-link"><%= article.headline %></a>
+										</div>
+										<div class="col-md-3">
+											<button class="btn btn-default hvr-bounce-in pull-right btn-save" data-article="<%= index %>">SAVE ARTICLE</button>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-10">
+											<p class="article-description"><%= article.description %></p>
+										</div>
+										<div class="col-md-2">
+											<img class="img-responsive article-img" src="<%= article.img %>" />
+										</div>
+									</div>
+								</div>
+							</div>
+						<% }) %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<% if((typeof user != 'undefined') && (flag === 0)) { %>
+			<% console.log("About to open modal, flag: " + flag); %>
+			<% include authenticated-modal %>
+		<% } %>
+
+	</body>
+</html>

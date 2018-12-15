@@ -41,50 +41,41 @@ let findById = (id) => {
   });
 }
 
-let addFavorites = (uniqueId, movieId, sessionId) => {
+let addFavorites = (uniqueId, record ,sessionId) => {
   return new Promise((resolve, reject) => {
-    let searchRef    = ref;      //'myApp'
-    let newSearchRef = searchRef.child(uniqueId);
-    let updateRef    = newSearchRef.child('favorites');
+    console.log("record: " + JSON.stringify(record));
 
-    updateRef.push({ movieId: movieId }).then((data) => {
-      console.log("success adding favorite movie");
-      resolve(data);
-    }).catch((error) => {
-      console.log("failed adding favorite movie");
-      reject();
+    let newArticle = new db.articleModel({
+       userUniqueId: uniqueId,
+       headline: record.heading,
+       description: record.description,
+       url: record.url,
+       img: record.image
+    });
+
+    newArticle.save((error) => {
+      if(error){
+        console.log('Create New Article Error');
+        reject(error);
+      }else{
+        resolve(newArticle);
+      }
     });
   });
 }
 
 let getFavorites = (uniqueId) => {
-  return new Promise( async(resolve, reject) => {
-    let newMovieArray = new Array();
-    let movieArray = new Array();
-    let found = false;
-
-    await firebase.usersArray.forEach(function(user, index){
-      if(user.uniqueId === uniqueId){                          //FIREBASE IS RETARDED !!!
-        console.log(`processFavoriteMovies - user.favorites: ${JSON.stringify(user.favorites)}`);  //Array of key: movieId object pairs. ie: 'SomeIdUsedAsKey': {movieId: 33432}
-
-        newMovieArray = [];
-        movieArray = Object.values(user.favorites);   //Array of just movieId Objects. ie: {movieId: 33432}
-
-        movieArray.forEach(function(movie, index){
-          console.log(`MovieID: ${movie.movieId}`);
-          newMovieArray.push(movie.movieId);              //Array of just movie ids
-        });
-        console.log(`newMovieArray: ${newMovieArray}`);
-
-        found = true;
-      }
+  return new Promise((resolve, reject) => {
+    console.log("userUniqueId --- helpers.getFavorites ---: " + uniqueId);
+    db.articleModel.find({ "userUniqueId" : uniqueId },function(err,response){
+        if(response){
+          console.log("data ---helper.getFavorites---: " + response);
+          resolve(response);
+        }else if(err){
+          console.log("ERROR: Could Not Get Favorite Movies Data");
+          reject("ERROR: Could Not Get Favorite Movies Data");
+        }
     });
-    if(found){
-      resolve(newMovieArray);
-    }else{
-      console.log("ERROR: Could Not Get Favorite Movies Data");
-      reject();
-    }
  });
 }
 

@@ -19,32 +19,39 @@ $( document ).ready(function() {
   toggleCenterDiv();
 
   function saveRecord(route, record){
-      $.ajax({
-          url: route,
-          method: "POST",
-          data: ''
-          })
-          .then(function(data) {
-              console.log(data);
-              if (data) {
-              console.log("Favorite Movie Saved Sucessfully");
-              console.log("data: " + data);
-              } else {
-              alert("Error Saving Favorite Movie");
-              }
-        });
+    console.log("Ajax call record: " + JSON.stringify(record));
+
+    $.ajax({
+      url: route,
+      method: "POST",
+      data: record
+      })
+      .then(function(data) {
+        console.log(data);
+        if (data) {
+          console.log("Favorite Article Saved Sucessfully");
+          console.log("data: " + JSON.stringify(data));
+          alert("Article Saved to Your Favorites!");
+        } else {
+        alert("Error Saving Favorite Article");
+      }
+    });
   }
 
-  $('.btn-favorite').click(function(){
-    let url = window.location.pathname;
-    let tokens = url.split("/");
-    let movieId = tokens[2];
-    let route = `/favorites/${movieId}`;
+  $('.btn-save').click(function(){
+    let dataArticle = $(this).data("article");
+    let domQuery = `div.panel.panel-primary.art-${dataArticle}`;
+    let route ="http://localhost:3000/favorites";
 
-    console.log("movieId: " + movieId);
-    console.log("route: " +  route);
+    let record = {
+      heading: $(domQuery).find(".article-link").text(),
+      description: $(domQuery).find("p.article-description").text(),
+      url: $(domQuery).find(".article-link").attr("href"),
+      image: $(domQuery).find(".article-img").prop('src')
+    }
 
-    saveRecord(route);
+    console.log(`Record: ${JSON.stringify(record)}`);
+    saveRecord(route, record);
   });
 });
 
