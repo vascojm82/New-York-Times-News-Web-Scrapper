@@ -45,6 +45,10 @@ let addFavorites = (uniqueId, record ,sessionId) => {
   return new Promise((resolve, reject) => {
     console.log("record: " + JSON.stringify(record));
 
+    if(typeof uniqueId === 'undefined' || uniqueId === null || uniqueId === ""){
+      reject("User Not Logged In!");
+    }
+
     let newArticle = new db.articleModel({
        userUniqueId: uniqueId,
        headline: record.heading,

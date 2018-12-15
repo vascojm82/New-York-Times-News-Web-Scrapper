@@ -33,7 +33,7 @@ $( document ).ready(function() {
           console.log("data: " + JSON.stringify(data));
           alert("Article Saved to Your Favorites!");
         } else {
-        alert("Error Saving Favorite Article");
+        alert("Error: " + data.error);
       }
     });
   }
